@@ -36,39 +36,40 @@ int main() {
 	two.cur = 0;
 	three.cur = 0;
 
-	int from, to, buf,result_deq,result_inq,move_cnt=0;
+	char from[8], to[8];
+	int buf,result_deq,result_inq,move_cnt=0;
 
 	tower_print(move_cnt, &one, &two, &three);
 
 	do{
 		printf("Select Tower:");
-		scanf_s("%d%d", &from, &to);
+		scanf_s("%s%s", &from, 8, &to, 8);
 		//check balid
-		if(from == 1)	        result_deq = deq_valid(&one, &buf);
-		else if (from == 2)		result_deq = deq_valid(&two, &buf);
-		else if (from == 3)		result_deq = deq_valid(&three, &buf);
+		if(from[0] == 'a')	        result_deq = deq_valid(&one, &buf);
+		else if (from[0] == 's')	result_deq = deq_valid(&two, &buf);
+		else if (from[0] == 'd')	result_deq = deq_valid(&three, &buf);
 		else
 		{
 			result_deq = -1;
 			buf = 0;
 		}
 
-		if (to == 1)	        result_inq = inq_valid(&one, buf);
-		else if (to == 2)		result_inq = inq_valid(&two, buf);
-		else if (to == 3)		result_inq = inq_valid(&three, buf);
+		if (to[0] == 'a')	        result_inq = inq_valid(&one, buf);
+		else if (to[0] == 's')		result_inq = inq_valid(&two, buf);
+		else if (to[0] == 'd')		result_inq = inq_valid(&three, buf);
 		else
 		{
 			result_inq = -1;
 		}
 
 		if (result_deq == 0 && result_inq == 0) {
-			if (from == 1)			deq(&one, &buf);
-			else if (from == 2)		deq(&two, &buf);
-			else if (from == 3)		deq(&three, &buf);
+			if (from[0] == 'a')			deq(&one, &buf);
+			else if (from[0] == 's')	deq(&two, &buf);
+			else if (from[0] == 'd')	deq(&three, &buf);
 
-			if (to == 1)			inq(&one, buf);
-			else if (to == 2)		inq(&two, buf);
-			else if (to == 3)		inq(&three, buf);
+			if (to[0] == 'a')			inq(&one, buf);
+			else if (to[0] == 's')		inq(&two, buf);
+			else if (to[0] == 'd')		inq(&three, buf);
 		}
 		move_cnt++;
 		tower_print(move_cnt, &one, &two, &three);
@@ -128,7 +129,7 @@ int tower_print(int move_cnt, tower_t* tower_a, tower_t* tower_b, tower_t* tower
 		if (tower_c->cur >= i)	printf("%d    \r\n", tower_c->q[i-1]);
 		else                    printf("|    \r\n");
 	}
-	printf("===============\r\n1    2    3    \r\n");
+	printf("===============\r\na    s    d    \r\n");
 	
 	return 0;
 }

@@ -16,8 +16,11 @@ int deq_valid(tower_t* atower, int *plate);
 int tower_print(int move_cnt, tower_t* tower_a, tower_t* tower_b, tower_t* tower_c);
 
 int main() {	
+	//printf("Game Clear\nPress x exit:");
+	//while (getchar() != 'x');
+	printf("Hanoi Tower\r\n");
 	do {
-		printf("level:");
+		printf("Select Level:");
 		scanf_s("%d", &level);
 	} while (level < 3 || level > 8);
 	system("cls");
@@ -37,7 +40,8 @@ int main() {
 
 	tower_print(move_cnt, &one, &two, &three);
 
-	while (1) {
+	do{
+		printf("Select Tower:");
 		scanf_s("%d%d", &from, &to);
 		//check balid
 		if(from == 1)	        result_deq = deq_valid(&one, &buf);
@@ -68,7 +72,11 @@ int main() {
 		}
 		move_cnt++;
 		tower_print(move_cnt, &one, &two, &three);
-	}
+	} while (two.cur != level && three.cur != level);
+
+	printf("Game Clear\nPress x exit:");
+	while (getchar() != 'x');
+
 	return 0;
 }
 int inq(tower_t* atower,int plate) {

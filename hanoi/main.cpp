@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+#define LEVEL 5
+
 typedef struct{
 	int q[8];
 	int cur;
@@ -10,17 +12,17 @@ int inq(tower_t* atower, int plate);
 int inq_valid(tower_t* atower, int plate);
 int deq(tower_t* atower, int *plate);
 int deq_valid(tower_t* atower, int *plate);
-int tower_print(tower_t* tower_a, tower_t* tower_b, tower_t* tower_c);
+int tower_print(int move_cnt, tower_t* tower_a, tower_t* tower_b, tower_t* tower_c);
 
 int main() {
-	tower_t one = { {3,2,1},3 };
+	//tower_t one = { {3,2,1},3 };
+	tower_t one = { {5,4,3,2,1},LEVEL };
 	tower_t two = { {},0 };
 	tower_t three = { {},0 };
 
-	int from, to, buf=0;
-	int result_deq=-1,result_inq = -1;
+	int from, to, buf,result_deq,result_inq,move_cnt=0;
 
-	tower_print(&one, &two, &three);
+	tower_print(move_cnt, &one, &two, &three);
 
 	while (1) {
 		scanf_s("%d%d", &from, &to);
@@ -28,10 +30,19 @@ int main() {
 		if(from == 1)	        result_deq = deq_valid(&one, &buf);
 		else if (from == 2)		result_deq = deq_valid(&two, &buf);
 		else if (from == 3)		result_deq = deq_valid(&three, &buf);
+		else
+		{
+			result_deq = -1;
+			buf = 0;
+		}
 
 		if (to == 1)	        result_inq = inq_valid(&one, buf);
 		else if (to == 2)		result_inq = inq_valid(&two, buf);
 		else if (to == 3)		result_inq = inq_valid(&three, buf);
+		else
+		{
+			result_inq = -1;
+		}
 
 		if (result_deq == 0 && result_inq == 0) {
 			if (from == 1)			deq(&one, &buf);
@@ -42,7 +53,8 @@ int main() {
 			else if (to == 2)		inq(&two, buf);
 			else if (to == 3)		inq(&three, buf);
 		}
-		tower_print(&one, &two, &three);
+		move_cnt++;
+		tower_print(move_cnt, &one, &two, &three);
 	}
 	return 0;
 }
@@ -56,7 +68,7 @@ int inq_valid(tower_t* atower, int plate) {
 	if (atower->cur == 0) {
 		return 0;
 	}
-	else if (atower->cur < 3 && atower->q[atower->cur - 1] > plate) {
+	else if (atower->cur < LEVEL && atower->q[atower->cur - 1] > plate) {
 		return 0;
 	}
 	else {
@@ -80,10 +92,12 @@ int deq_valid(tower_t* atower, int *plate) {
 	}
 }
 
-int tower_print(tower_t* tower_a, tower_t* tower_b, tower_t* tower_c) {
+int tower_print(int move_cnt, tower_t* tower_a, tower_t* tower_b, tower_t* tower_c) {
 	system("cls");
+	printf("move_cnt:%d\r\n---------------\r\n",move_cnt);
 
-	for(int i = 3; i >= 1; i--) {
+	for (int i = LEVEL; i >= 1; i--) {
+	//for(int i = 3; i >= 1; i--) {
 		if (tower_a->cur >= i)	printf("%d    ", tower_a->q[i-1]);
 		else                    printf("|    ");
 

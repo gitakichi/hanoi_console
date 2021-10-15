@@ -1,7 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#define LEVEL 5
+//#define level 5
+int level = 5;
 
 typedef struct{
 	int q[8];
@@ -14,11 +15,23 @@ int deq(tower_t* atower, int *plate);
 int deq_valid(tower_t* atower, int *plate);
 int tower_print(int move_cnt, tower_t* tower_a, tower_t* tower_b, tower_t* tower_c);
 
-int main() {
-	//tower_t one = { {3,2,1},3 };
-	tower_t one = { {5,4,3,2,1},LEVEL };
-	tower_t two = { {},0 };
-	tower_t three = { {},0 };
+int main() {	
+	do {
+		printf("level:");
+		scanf_s("%d", &level);
+	} while (level < 3 || level > 8);
+	system("cls");
+	
+	tower_t one;
+	tower_t two;
+	tower_t three;
+
+	for (int i = 0; i < level; i++) {
+		one.q[i] = level - i;
+	}
+	one.cur = level;
+	two.cur = 0;
+	three.cur = 0;
 
 	int from, to, buf,result_deq,result_inq,move_cnt=0;
 
@@ -68,7 +81,7 @@ int inq_valid(tower_t* atower, int plate) {
 	if (atower->cur == 0) {
 		return 0;
 	}
-	else if (atower->cur < LEVEL && atower->q[atower->cur - 1] > plate) {
+	else if (atower->cur < level && atower->q[atower->cur - 1] > plate) {
 		return 0;
 	}
 	else {
@@ -94,9 +107,9 @@ int deq_valid(tower_t* atower, int *plate) {
 
 int tower_print(int move_cnt, tower_t* tower_a, tower_t* tower_b, tower_t* tower_c) {
 	system("cls");
-	printf("move_cnt:%d\r\n---------------\r\n",move_cnt);
+	printf("move_cnt:%d\r\n\n\n",move_cnt);
 
-	for (int i = LEVEL; i >= 1; i--) {
+	for (int i = level; i >= 1; i--) {
 	//for(int i = 3; i >= 1; i--) {
 		if (tower_a->cur >= i)	printf("%d    ", tower_a->q[i-1]);
 		else                    printf("|    ");
